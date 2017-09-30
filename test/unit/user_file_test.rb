@@ -134,4 +134,9 @@ class UserFileTest < ActiveSupport::TestCase
     file.update_attributes(:attachment_file_name => 'test')
     assert file.extension.blank?
   end
+
+  test 'verify' do
+    rdl_do_verify :later, 11
+  end  
+  
 end

@@ -1,3 +1,18 @@
+module ActiveRecord::Associations::ClassMethods
+  type ActiveRecord::Base, :save!, '()-> %bool b', modular: true
+ # type ActiveRecord::Transactions, :save!, '()-> %bool b', modular: true
+  type ActiveRecord::Core, :==, '(%any) -> %bool'
+
+  pre(:belongs_to) do |*args|
+
+    name = args[0].to_s
+    class_name = name.camelize
+    type name, "() -> #{class_name} c", modular: true, pure: true
+    type "#{name}=", "(#{class_name} input) -> #{class_name} output {{ #{name} == input }}", modular: true
+    true
+  end
+end
+
 class UserFile < ActiveRecord::Base
   has_attached_file :attachment, :path => ':rails_root/uploads/:rails_env/:id/:style/:id', :restricted_characters => RESTRICTED_CHARACTERS
   do_not_validate_attachment_file_type :attachment
@@ -21,7 +36,8 @@ class UserFile < ActiveRecord::Base
 
     new_file
   end
-
+  
+  type '(Folder target_folder) -> %bool b {{ folder == target_folder }}', verify: :later, wrap: false
   def move(target_folder)
     self.folder = target_folder
     save!

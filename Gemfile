@@ -15,6 +15,7 @@ gem 'dynamic_form'
 gem 'acts_as_tree'
 gem 'paperclip'
 gem 'jquery-fileupload-rails'
+gem 'rdl', '~> 2.0.1'
 
 group :development do
   gem 'web-console', '~> 2.0'
